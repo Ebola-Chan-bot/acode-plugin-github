@@ -1,8 +1,8 @@
 {
-  "id": "GitHub",
+  "id": "github",
   "name": "GitHub",
   "main": "dist/main.js",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "readme": "readme.md",
   "icon": "icon.png",
   "files": [],
