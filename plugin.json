@@ -1,14 +1,13 @@
 {
-  "id": "acode.plugin.github",
-  "name": "Github",
+  "id": "GitHub",
+  "name": "GitHub",
   "main": "dist/main.js",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "readme": "readme.md",
   "icon": "icon.png",
   "files": [],
   "author": {
-    "name": "Ajit Kumar",
-    "email": "me@ajitkumar.dev",
-    "github": "deadlyjack"
+    "name": "埃博拉酱-机器人",
+    "github": "Ebola-chan-bot"
   }
 }
