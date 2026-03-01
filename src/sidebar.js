@@ -98,7 +98,10 @@ export default function createSidebar(pluginInstance) {
     } catch (_) {}
   }
 
-  function runAction(methodName, title, refreshAfter) {
+  // [Copilot review] Removed unused `refreshAfter` parameter — showPanel()
+  // is already called unconditionally in .finally(), so the panel always
+  // refreshes after every action regardless.
+  function runAction(methodName, title) {
     if (busy) {
       notify(t.actionRunning);
       return;
@@ -129,7 +132,7 @@ export default function createSidebar(pluginInstance) {
       });
   }
 
-  function createActionButton(text, methodName, refreshAfter) {
+  function createActionButton(text, methodName) {
     var button = document.createElement('button');
     button.textContent = text;
     button.disabled = busy;
@@ -147,7 +150,7 @@ export default function createSidebar(pluginInstance) {
       'opacity:' + (busy ? '0.7' : '1')
     ].join(';');
     button.onclick = function () {
-      runAction(methodName, text, !!refreshAfter);
+      runAction(methodName, text);
     };
     return button;
   }
@@ -169,22 +172,22 @@ export default function createSidebar(pluginInstance) {
     var repoTitle = document.createElement('p');
     repoTitle.innerHTML = '<b>' + t.repository + '</b>';
     div.appendChild(repoTitle);
-    div.appendChild(createActionButton(t.openRepository, 'openRepo', false));
+    div.appendChild(createActionButton(t.openRepository, 'openRepo'));
 
     var gistTitle = document.createElement('p');
     gistTitle.style.marginTop = '10px';
     gistTitle.innerHTML = '<b>' + t.gist + '</b>';
     div.appendChild(gistTitle);
-    div.appendChild(createActionButton(t.openGist, 'openGist', false));
-    div.appendChild(createActionButton(t.deleteGist, 'deleteGist', false));
-    div.appendChild(createActionButton(t.deleteGistFile, 'deleteGistFile', false));
+    div.appendChild(createActionButton(t.openGist, 'openGist'));
+    div.appendChild(createActionButton(t.deleteGist, 'deleteGist'));
+    div.appendChild(createActionButton(t.deleteGistFile, 'deleteGistFile'));
 
     var utilTitle = document.createElement('p');
     utilTitle.style.marginTop = '10px';
     utilTitle.innerHTML = '<b>' + t.accountCache + '</b>';
     div.appendChild(utilTitle);
-    div.appendChild(createActionButton(t.updateToken, 'updateToken', true));
-    div.appendChild(createActionButton(t.clearCache, 'clearCache', true));
+    div.appendChild(createActionButton(t.updateToken, 'updateToken'));
+    div.appendChild(createActionButton(t.clearCache, 'clearCache'));
 
     container.appendChild(div);
   }

@@ -67,8 +67,8 @@ class AcodePlugin {
       const commands = editorManager.editor.commands.byName;
       const openCommandPalette = commands.openCommandPalette || commands.openCommandPallete;
       const message = t(
-        "Github plugin is installed successfully. You can use the sidebar panel or open command palette and search 'open repository' to open a github repository.",
-        'Github 插件安装成功。您可以使用侧边栏面板，或打开命令面板搜索「open repository」来打开 GitHub 仓库。'
+        "GitHub plugin is installed successfully. You can use the sidebar panel or open command palette and search 'open repository' to open a GitHub repository.",
+        'GitHub 插件安装成功。您可以使用侧边栏面板，或打开命令面板搜索「open repository」来打开 GitHub 仓库。'
       );
       let key = 'Ctrl+Shift+P';
       if (openCommandPalette) {
@@ -404,15 +404,24 @@ class AcodePlugin {
         return;
       }
 
+      // [Copilot+Greptile review] Persist to localStorage only after
+      // validation succeeds; rollback this.token on failure so an invalid
+      // token never stays cached across app restarts.
+      const oldToken = this.token;
       this.token = normalizedToken;
       this.#fsInitialized = false;
-      localStorage.setItem('github-token', this.token);
       await this.initFs();
 
       try {
         const gh = await this.#GitHub();
         await gh.getUser().getProfile();
+        // Validation passed — now persist
+        localStorage.setItem('github-token', this.token);
       } catch (error) {
+        // Rollback to previous token
+        this.token = oldToken;
+        this.#fsInitialized = false;
+        await this.initFs();
         const msg = error && (error.message || String(error)) || t('Unknown token error', '未知令牌错误');
         toast(t('Token validation failed: ', '令牌校验失败：') + msg);
         throw error;

@@ -50,7 +50,10 @@ class Requestable {
    * @param {string} [AcceptHeader=v3] - the accept header for the requests
    */
   constructor(auth, apiBase, AcceptHeader) {
-    const normalizedToken = auth && auth.token
+    // [Copilot review] auth is optional per JSDoc — default to {} to prevent
+    // TypeError when accessing auth.token / auth.username / auth.password
+    auth = auth || {};
+    const normalizedToken = auth.token
       ? String(auth.token)
         .trim()
         .replace(/^Bearer\s+/i, '')
